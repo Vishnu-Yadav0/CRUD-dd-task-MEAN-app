@@ -25,19 +25,8 @@ services:
   frontend:
     image: "${DOCKERHUB_USERNAME}/crud-mean-app:frontend-latest"
     restart: unless-stopped
-    networks:
-      - app-network
-
-  nginx-proxy:
-    image: nginx:stable-alpine
-    restart: unless-stopped
-    volumes:
-      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
     ports:
-      - "80:80"
-    depends_on:
-      - frontend
-      - backend
+      - "80:80"   # Expose Angular Nginx to internet
     networks:
       - app-network
 
