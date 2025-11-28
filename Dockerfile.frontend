@@ -6,20 +6,22 @@ WORKDIR /usr/src/app
 COPY frontend/package*.json ./
 RUN npm ci
 
-# Copy full frontend source
 COPY frontend ./
-
-# Angular build (this uses outputPath from angular.json automatically)
 RUN npm run build -- --configuration production
 
 # Production NGINX stage
 FROM nginx:stable-alpine
 
+# Remove default config
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy your custom NGINX config
+COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
 # Remove default HTML files
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy Angular build output
-# Angular puts the build into "dist/angular-15-crud"
+# Copy built Angular files
 COPY --from=build /usr/src/app/dist/angular-15-crud /usr/share/nginx/html
 
 EXPOSE 80
