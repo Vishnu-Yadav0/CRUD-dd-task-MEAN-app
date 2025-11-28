@@ -1,0 +1,41 @@
+# backend/Dockerfile
+FROM node:18-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Only copy package manifests first to leverage caching
+COPY backend/package*.json ./
+
+# Install dependencies (production)
+RUN npm ci --only=production
+
+# Copy app source
+COPY . .
+
+# Expose port used by your server
+EXPOSE 8080
+
+# Use environment variable for node environment
+ENV NODE_ENV=production
+ENV PORT=8080
+ENV MONGODB_URI="mongodb://mongo:27017/tutorials_db"
+
+# Start the server
+CMD ["node", "server.js"]
+
+
+# # backend/Dockerfile
+# FROM node:18
+
+# WORKDIR /usr/src/app
+
+# COPY package*.json ./
+# RUN npm install --production
+
+# COPY . .
+
+# EXPOSE 8080
+
+# # Use environment variable DB_URL in your app to connect to mongodb
+# CMD ["node", "server.js"]
