@@ -1,29 +1,30 @@
-# frontend/Dockerfile
+# frontend/Dockerfile.frontend
 
 # Build stage
 FROM node:18-alpine AS build
 
 WORKDIR /app
 
-# Copy only package files first
+# Copy package files
 COPY frontend/package*.json ./
 
-RUN npm ci
+# Install dependencies
+RUN npm install
 
-# Copy full Angular project
+# Copy full frontend project
 COPY frontend/ ./
 
-# Build Angular app (output goes to dist/angular-15-crud)
-RUN npm run build --configuration production
+# Build Angular app
+ng build angular-15-crud --configuration=production
 
 # Production stage using Nginx
 FROM nginx:stable-alpine
 
-# Clean default Nginx html folder
+# Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built Angular output
-COPY --from=build /app/dist/angular-15-crud /usr/share/nginx/html/
+COPY --from=build /app/dist/angular-15-crud /usr/share/nginx/html
 
 EXPOSE 80
 
