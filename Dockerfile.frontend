@@ -18,7 +18,8 @@ FROM nginx:stable-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy built app from build stage
-COPY --from=build /usr/src/app/dist/frontend/ /usr/share/nginx/html/
+COPY --from=builder /app/frontend/dist/angular-15-crud /usr/share/nginx/html
+
 
 # Expose http port
 EXPOSE 80

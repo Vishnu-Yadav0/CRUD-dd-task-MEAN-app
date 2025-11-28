@@ -8,12 +8,11 @@ services:
       - mongo-data:/data/db
     environment:
       MONGO_INITDB_DATABASE: tutorials_db
+    networks:
+      - app-network
 
   backend:
-    image: "${DOCKERHUB_USERNAME:-your_dockerhub_username}/crud-mean-app:${BACKEND_IMAGE_TAG:-latest}"
-    build:
-      context: .
-      dockerfile: Dockerfile.backend
+    image: "${DOCKERHUB_USERNAME}/crud-mean-app:backend-latest"
     restart: unless-stopped
     depends_on:
       - mongo
@@ -24,10 +23,7 @@ services:
       - app-network
 
   frontend:
-    image: "${DOCKERHUB_USERNAME:-your_dockerhub_username}/crud-mean-app:${FRONTEND_IMAGE_TAG:-latest}"
-    build:
-      context: .
-      dockerfile: Dockerfile.frontend
+    image: "${DOCKERHUB_USERNAME}/crud-mean-app:frontend-latest"
     restart: unless-stopped
     networks:
       - app-network
@@ -51,39 +47,3 @@ volumes:
 networks:
   app-network:
     driver: bridge
-
-
-# version: "3.9"
-# services:
-#   mongo:
-#     image: mongo:7
-#     container_name: mongo
-#     restart: unless-stopped
-#     ports:
-#       - "27017:27017"
-#     volumes:
-#       - mongo-data:/data/db
-
-#   backend:
-#     build: ./backend
-#     container_name: mean-backend
-#     restart: unless-stopped
-#     environment:
-#       - DB_URL=mongodb://mongo:27017/bezkoder_db
-#       - PORT=8080
-#     depends_on:
-#       - mongo
-#     ports:
-#       - "8080:8080"
-
-#   frontend:
-#     build: ./frontend
-#     container_name: mean-frontend
-#     restart: unless-stopped
-#     depends_on:
-#       - backend
-#     ports:
-#       - "8081:80"
-
-# volumes:
-#   mongo-data:
