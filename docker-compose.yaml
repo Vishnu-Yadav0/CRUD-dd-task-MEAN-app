@@ -26,7 +26,9 @@ services:
     image: "${DOCKERHUB_USERNAME}/crud-mean-app:frontend-latest"
     restart: unless-stopped
     ports:
-      - "80:80"   # Expose Angular Nginx to internet
+      - "80:80"
+    depends_on:
+      - backend
     networks:
       - app-network
 
