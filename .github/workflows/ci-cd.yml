@@ -44,3 +44,6 @@ jobs:
 
             # Recreate and start the containers
             sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} DOCKERHUB_REPO=crud-mean-app docker compose up -d --force-recreate
+        
+            export DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }}
+            export DOCKERHUB_REPO=crud-mean-app
