@@ -38,5 +38,9 @@ jobs:
           script: |
             cd CRUD-dd-task-MEAN-app
             git pull
-            docker-compose pull
-            docker-compose up -d --force-recreate
+
+            # Pull images using passed variables
+            sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} DOCKERHUB_REPO=crud-mean-app docker compose pull
+
+            # Recreate and start the containers
+            sudo DOCKERHUB_USERNAME=${{ secrets.DOCKERHUB_USERNAME }} DOCKERHUB_REPO=crud-mean-app docker compose up -d --force-recreate
