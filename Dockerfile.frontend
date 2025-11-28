@@ -15,7 +15,7 @@ RUN npm install
 COPY frontend/ ./
 
 # Build Angular app
-ng build angular-15-crud --configuration=production
+RUN npm run build -- --configuration=production
 
 # Production stage using Nginx
 FROM nginx:stable-alpine
